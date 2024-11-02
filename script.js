@@ -119,7 +119,7 @@ function updateCounter() {
   const itemsComprados = itemList.querySelectorAll("li.comprado").length;
   const itemsRestantes = totalItems - itemsComprados;
 
-  counter.textContent = `Total: ${totalItems} | Comprados: ${itemsComprados} | Restantes: ${itemsRestantes}`;
+  counter.textContent = `Total: ${totalItems} | No carrinho: ${itemsComprados} | Restantes: ${itemsRestantes}`;
 }
 
 // Carregar a lista ao iniciar a página
