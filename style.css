@@ -27,6 +27,21 @@ input, button {
     padding: 0;
 }
 
+#clearListButton {
+    padding: 10px;
+    margin: 5px;
+    font-size: 16px;
+    background-color: #ff6961;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#clearListButton:hover {
+    background-color: #ff5c5c;
+}
+
 .comprado {
     text-decoration: line-through;
     color: gray;

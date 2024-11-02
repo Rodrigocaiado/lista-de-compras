@@ -50,6 +50,7 @@ function addItemToDOM(text, comprado = false) {
   removeButton.addEventListener("click", function () {
     itemList.removeChild(listItem);
     saveList();
+    updateCounter(); // Atualize o contador após a remoção
   });
 
   // Adicionando o botão ao item da lista e adicionando o item na lista do DOM
@@ -73,6 +74,50 @@ function addItem() {
   itemInput.value = "";
 }
 
+// Função para limpar toda a lista e o Local Storage
+function clearList() {
+  if (confirm("Tem certeza de que deseja limpar toda a lista?")) {
+    // Remove todos os itens do DOM
+    itemList.innerHTML = "";  
+    
+    // Remove a a lista do local Storage
+    localStorage.removeItem("listaDeCompras"); 
+
+    // Atualiza o contador para refletir a lista vazia
+    updateCounter();
+  }
+}
+
+// Função para atualizar o contador de itens
+function updateCounter() {
+  const totalItens = itemList.querySelectorAll("li").length;
+  const itensComprados = itemList.querySelectorAll("li.comprado").length;
+  const itensRestantes = totalItens - itensComprados;
+
+  const counter = document.getElementById("counter");
+  counter.textContent = `Total: ${totalItens} | Pego: ${itensComprados} | Restantes: ${itensRestantes}`;
+
+  // Verifique se a lista está vazia e exibe a mensagem
+  if (totalItens === 0) {
+    itemList.innerHTML = "<p>Sua lista está vazia!</p>";
+  }
+}
+
+// Modifique `addItemDOM` e `clearList` para chamar `updateCounter`
+function addItemDOM(text, comprado = false) {
+  // código atual...
+
+  // Atualiza o contador após adicionar o item
+  updateCounter();
+}
+
+function clearList() {
+  // código atual...
+
+  // Atualiza o contador após limpar a lista
+  updateCounter();
+}
+
 // Evento para o botão de adicionar
 addItemButton.addEventListener("click", addItem);
 
@@ -83,17 +128,12 @@ itemInput.addEventListener("keypress", function(event) {
     }
 });
 
-// Função para limpar toda a lista e o local Storage
-function clearList() {
-  if (confirm("Tem certeza de que deseja limpar toda a lista?")) {
-    itemList.innerHTML = ""; // Remove todos os itens do DOM
-    saveList();
-  }
-}
-
-// Evento para o botão "limpar lista"
+// Evento para o botão "Limpar Lista"
 const clearListButton = document.getElementById("clearListButton");
 clearListButton.addEventListener("click", clearList);
 
 // Carregar a lista ao iniciar a página
 loadList();
+
+// Chame `updateCounter` em `loadList` para garantir que o contador atualize ao carregar
+updateCounter();
