@@ -81,7 +81,19 @@ itemInput.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
       addItem();
     }
-  });
+});
+
+// Função para limpar toda a lista e o local Storage
+function clearList() {
+  if (confirm("Tem certeza de que deseja limpar toda a lista?")) {
+    itemList.innerHTML = ""; // Remove todos os itens do DOM
+    saveList();
+  }
+}
+
+// Evento para o botão "limpar lista"
+const clearListButton = document.getElementById("clearListButton");
+clearListButton.addEventListener("click", clearList);
 
 // Carregar a lista ao iniciar a página
 loadList();
