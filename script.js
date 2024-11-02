@@ -3,7 +3,8 @@ const itemInput = document.getElementById("itemInput");
 const addItemButton = document.getElementById("addItemButton");
 const itemList = document.getElementById("itemList");
 const clearListButton = document.getElementById("clearListButton");
-const counter = document.getElementById("counter");
+const emptyMessage = document.getElementById("emptyMessage"); // Mensagem de lista vazia
+const counter = document.getElementById("counter"); // Contador de itens
 
 // Função para salvar a lista no Local Storage
 function saveList() {
@@ -19,12 +20,15 @@ function saveList() {
 
 // Função para carregar a lista do Local Storage
 function loadList() {
+  itemList.innerHTML = ''; // Limpa a lista atual para evitar duplicações
   const savedItems = JSON.parse(localStorage.getItem("listaDeCompras"));
   if (savedItems) {
     savedItems.forEach(item => {
       addItemToDOM(item.text, item.comprado);
     });
   }
+  updateCounter(); // Atualiza o contador
+  checkEmptyList(); // Verifica se a lista está vazia
 }
 
 // Função para adicionar um item ao DOM e salvar no Local Storage
@@ -39,8 +43,9 @@ function addItemToDOM(text, comprado = false) {
   // Função para marcar/desmarcar item como comprado
   listItem.addEventListener("click", function () {
     listItem.classList.toggle("comprado");
-    saveList();
-    updateCounter();
+    saveList(); // Salva sempre que marcar/desmarcar
+    updateCounter(); // Atualiza o contador
+    checkEmptyList(); // Verifica se a lista está vazia
   });
 
   // Criando o botão de remover
@@ -50,16 +55,16 @@ function addItemToDOM(text, comprado = false) {
 
   // Evento de remover o item da lista e do Local Storage
   removeButton.addEventListener("click", function () {
-    if (confirm("Tem certeza de que deseja remover este item?")) {
-      itemList.removeChild(listItem);
-      saveList();
-      updateCounter();
-    }
+    itemList.removeChild(listItem);
+    saveList(); // Salva a lista após remover o item
+    updateCounter(); // Atualiza o contador
+    checkEmptyList(); // Verifica se a lista está vazia
   });
 
   listItem.appendChild(removeButton);
   itemList.appendChild(listItem);
-  updateCounter();
+  updateCounter(); // Atualiza o contador
+  checkEmptyList(); // Verifica se a lista está vazia
 }
 
 // Função principal para adicionar o item
@@ -73,7 +78,7 @@ function addItem() {
 
   addItemToDOM(itemText);
   saveList();
-  itemInput.value = "";
+  itemInput.value = ""; // Limpa o campo de entrada
 }
 
 // Evento para o botão de adicionar
@@ -91,12 +96,22 @@ function clearList() {
   if (confirm("Tem certeza de que deseja limpar toda a lista?")) {
     itemList.innerHTML = "";  
     localStorage.removeItem("listaDeCompras");
-    updateCounter();
+    updateCounter(); // Atualiza o contador
+    checkEmptyList(); // Verifica se a lista está vazia
   }
 }
 
 // Evento para o botão "Limpar Lista"
 clearListButton.addEventListener("click", clearList);
+
+// Função para verificar se a lista está vazia
+function checkEmptyList() {
+  if (itemList.children.length === 0) {
+    emptyMessage.style.display = "block"; // Mostra a mensagem
+  } else {
+    emptyMessage.style.display = "none"; // Esconde a mensagem
+  }
+}
 
 // Função para atualizar o contador de itens
 function updateCounter() {
@@ -104,14 +119,8 @@ function updateCounter() {
   const itemsComprados = itemList.querySelectorAll("li.comprado").length;
   const itemsRestantes = totalItems - itemsComprados;
 
-  counter.textContent = `Total: ${totalItems} | Pego: ${itemsComprados} | Restantes: ${itemsRestantes}`;
-
-  // Exibe mensagem quando a lista está vazia
-  if (totalItems === 0) {
-    itemList.innerHTML = "<p>Sua lista está vazia!</p>";
-  }
+  counter.textContent = `Total: ${totalItems} | Comprados: ${itemsComprados} | Restantes: ${itemsRestantes}`;
 }
 
 // Carregar a lista ao iniciar a página
 loadList();
-updateCounter();
