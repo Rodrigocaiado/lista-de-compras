@@ -104,7 +104,7 @@ function updateCounter() {
   const itemsComprados = itemList.querySelectorAll("li.comprado").length;
   const itemsRestantes = totalItems - itemsComprados;
 
-  counter.textContent = `Total: ${totalItems} | Comprados: ${itemsComprados} | Restantes: ${itemsRestantes}`;
+  counter.textContent = `Total: ${totalItems} | Pego: ${itemsComprados} | Restantes: ${itemsRestantes}`;
 
   // Exibe mensagem quando a lista está vazia
   if (totalItems === 0) {
