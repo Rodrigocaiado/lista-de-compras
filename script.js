@@ -52,6 +52,9 @@ function addItemToDOM(text, comprado = false) {
   const removeButton = document.createElement("button");
   removeButton.textContent = "Remover";
   removeButton.style.marginLeft = "10px";
+  removeButton.style.padding = "4px";
+  removeButton.style.fontSize = "15px";
+  removeButton.style.borderRadius = "10px"
 
   // Evento de remover o item da lista e do Local Storage
   removeButton.addEventListener("click", function () {

@@ -45,6 +45,7 @@ input, button {
 #addItemButton:hover {
     background-color: gray;
     color: #fff;
+    cursor: pointer;
 }
 
 #clearListButton {
